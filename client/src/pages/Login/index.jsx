@@ -8,6 +8,12 @@ function Login() {
 			"_self"
 		);
 	};
+	const localAuth = () => {
+		window.open(
+			`${process.env.REACT_APP_API_URL}/auth/post-login`,
+			"_self"
+		);
+	};
 	return (
 		<div className={styles.container}>
 			<h1 className={styles.heading}>Log in Form</h1>
@@ -19,12 +25,13 @@ function Login() {
 					<h2 className={styles.from_heading}>Members Log in</h2>
 					<input type="text" className={styles.input} placeholder="Email" />
 					<input type="text" className={styles.input} placeholder="Password" />
-					<button className={styles.btn}>Log In</button>
+					<button type="submit" className={styles.btn} onSubmit={localAuth}>Log In</button>
 					<p className={styles.text}>or</p>
 					<button className={styles.google_btn} onClick={googleAuth}>
 						<img src="./images/google.png" alt="google icon" />
 						<span>Sing in with Google</span>
 					</button>
+					
 					<p className={styles.text}>
 						New Here ? <Link to="/signup">Sing Up</Link>
 					</p>

@@ -1,4 +1,10 @@
 import styles from "./styles.module.css";
+import Navbar from "react-bootstrap/Navbar";
+import Container from "react-bootstrap/Container";
+import {LinkContainer} from 'react-router-bootstrap';
+
+
+
 
 function Home(userDetails) {
 	console.log(userDetails.user)
@@ -9,6 +15,17 @@ function Home(userDetails) {
 	};
 	return (
 		<div className={styles.container}>
+			<header>
+				<Navbar bg="dark" varient= "dark">
+					<Container>
+						<LinkContainer to = "/home">
+							<Navbar.Brand>E-COMM</Navbar.Brand>
+						</LinkContainer>
+
+					</Container>
+
+				</Navbar>
+			</header>
 			<h1 className={styles.heading}>Home</h1>
 			<div className={styles.form_container}>
 				<div className={styles.left}>

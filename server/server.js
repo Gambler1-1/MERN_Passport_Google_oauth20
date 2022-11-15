@@ -1,19 +1,29 @@
 require("dotenv").config();
 const express = require("express");
+const mongoose = require('mongoose')
+
 const cors = require("cors");
 const passport = require("passport");
 const authRoute = require("./routes/auth");
-const cookieSession = require("cookie-session");
+const session = require('express-session')
+const MongoDbStore = require('connect-mongodb-session')(session);
+;
 const passportStrategy = require("./passport");
 const app = express();
 
-app.use(
-	cookieSession({
-		name: "session",
-		keys: ["cyberwolve"],
-		maxAge: 24 * 60 * 60 * 100,
-	})
-);
+const MONGODB_URI = process.env.MONGODB_URI
+const store = new MongoDbStore({
+  uri: MONGODB_URI,
+  collection: 'sessions'
+})
+
+
+app.use(session({
+  secret: 'my secret',
+  resave: false,
+  saveUninitialized: false,
+  store: store
+}))
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -28,5 +38,18 @@ app.use(
 
 app.use("/auth", authRoute);
 
+
+
 const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`Listenting on port ${port}...`));
+const start = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    app.listen(port, () =>
+      console.log(`Server is listening on port ${port}...`)
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();
